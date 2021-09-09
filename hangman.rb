@@ -10,10 +10,18 @@ class Player
 	attr_reader :random_word
 
 	def initialize(random_word)
-		@random_word = random_word
-		@correct_guesses = []
+		@random_word = random_word.split('')
+		@correct_guesses = Array.new(@random_word.length, '-')
 		@guesses_left = 6
 		@player_guess = ''
+	end
+
+	def display_correct_guesses
+		@random_word.each_with_index do |letter, index|
+			if letter == @player_guess
+				@correct_guesses[index] = @player_guess
+			end
+		end
 	end
 
 	def player_turn
@@ -21,10 +29,13 @@ class Player
 		@player_guess = gets.chomp
 		if @random_word.include?(@player_guess)
 			p "You have guessed correctly!"
+			display_correct_guesses
+			p @correct_guesses
 		else
 			@guesses_left -= 1
 			p "You have guessed incorrectly and have #{@guesses_left} guesses left"
-		#if out of guesses player loses
+			p @correct_guesses
+			#if out of guesses player loses
 		end
 	end
 end
