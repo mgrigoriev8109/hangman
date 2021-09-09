@@ -1,11 +1,5 @@
-#when game starts script loads dictionary
-  #randomly selects word between 5 and 12 chars for secret word
-
 #every turn player makes a guess
   #if out of guesses player loses
-
-#display guesses player has left before game ends
-  #iterative instance variable that decreases every time method run
 
 #display correct (&incorrect)letters that have been chosen
   #two different arrays
@@ -17,10 +11,21 @@ class Player
 
 	def initialize(random_word)
 		@random_word = random_word
+		@correct_guesses = []
+		@guesses_left = 6
+		@player_guess = ''
 	end
 
-	def print_random_word
-		p @random_word
+	def player_turn
+		p "What letter would you like to guess for the random word?"
+		@player_guess = gets.chomp
+		if @random_word.include?(@player_guess)
+			p "You have guessed correctly!"
+		else
+			@guesses_left -= 1
+			p "You have guessed incorrectly and have #{@guesses_left} guesses left"
+		#if out of guesses player loses
+		end
 	end
 end
 
@@ -40,3 +45,4 @@ new_computer = Computer.new
 
 new_player = Player.new (new_computer.get_random_word)
 p new_player.random_word
+new_player.player_turn
