@@ -1,4 +1,5 @@
-require_relative 'computer.rb'
+require_relative 'random_word.rb'
+require_relative 'save_load.rb'
 
 class Player
 
@@ -35,6 +36,15 @@ class Player
 		end
 	end
 
+	def play_game(player_instance)
+		until @guesses_left == 0 do
+			save_game(player_instance)
+      player_turn
+      @guesses_left -= 1
+		end
+		p "You have lost the game!"
+	end
+
 	def check_game_victory
 		if @correct_guesses == @random_word
 			p "You have won the game!"
@@ -42,17 +52,7 @@ class Player
 		end
 	end
 
-	def save_game(player_instance)
-		puts "Would you like to save the game, type 'Yes' if you would."
-		@player_response = gets.chomp
-		if @player_response == 'Yes'
-			File.open('saved_game', 'w+') do |file|
-				Marshal.dump(player_instance, file)
-			end
-		end
-	end
 end
 
-computer = Computer.new
-new_player = Player.new (computer.get_random_word)
-computer.play_game(new_player.player_turn, new_player)
+new_player = Player.new (get_random_word)
+new_player.play_game(new_player)
