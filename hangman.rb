@@ -39,8 +39,8 @@ class Player
 	def play_game(player_instance)
 		until @guesses_left == 0 do
 			save_game(player_instance)
+			load_game(player_instance)
       player_turn
-      @guesses_left -= 1
 		end
 		p "You have lost the game!"
 	end
