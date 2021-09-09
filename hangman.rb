@@ -11,18 +11,22 @@
   #two different arrays
   #when guesses_array.include?(secret_word_array) player wins
 
-def get_random_word
-  random_word_file = File.open("5desk.txt", "r")
-  random_word_array = random_word_file.read.split("\r\n")
-  p random_word_array.sample
-end
-
-get_random_word
 
 #class Player
 
 #end
 
-#class Computer
+class Computer
+	def get_random_word
+		random_word_file = File.open("5desk.txt", "r")
+		random_word_array = random_word_file.read.split("\r\n")
+		random_word = random_word_array.sample
+		until random_word.length > 4 && random_word.length < 13 do
+			random_word = random_word_array.sample
+		end
+		p random_word
+	end
+end
 
-#end
+new_computer = Computer.new
+new_computer.get_random_word
