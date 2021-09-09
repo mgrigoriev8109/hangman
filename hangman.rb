@@ -12,9 +12,17 @@
   #when guesses_array.include?(secret_word_array) player wins
 
 
-#class Player
+class Player
+	attr_reader :random_word
 
-#end
+	def initialize(random_word)
+		@random_word = random_word
+	end
+
+	def print_random_word
+		p @random_word
+	end
+end
 
 class Computer
 	def get_random_word
@@ -24,9 +32,11 @@ class Computer
 		until random_word.length > 4 && random_word.length < 13 do
 			random_word = random_word_array.sample
 		end
-		p random_word
+		random_word
 	end
 end
 
 new_computer = Computer.new
-new_computer.get_random_word
+
+new_player = Player.new (new_computer.get_random_word)
+p new_player.random_word
