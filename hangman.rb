@@ -1,5 +1,5 @@
 require_relative 'random_word.rb'
-require_relative 'save_load.rb'
+
 
 class Player
 
@@ -11,7 +11,7 @@ class Player
 		@player_guess = ''
 	end
 
-	def display_correct_guesses
+	def modify_correct_guesses
 		@random_word.each_with_index do |letter, index|
 			if letter == @player_guess
 				@correct_guesses[index] = @player_guess
@@ -21,41 +21,44 @@ class Player
 
 	def player_turn
 		p @random_word
-		p "What letter would you like to guess for the random word?"
+		puts "What letter would you like to guess for the random word?"
 		@player_guess = gets.chomp.downcase
 		if @random_word.include?(@player_guess)
-			p "You have guessed the letter #{@player_guess} correctly!"
-			display_correct_guesses
+			puts "You have guessed the letter #{@player_guess} correctly!"
+			modify_correct_guesses
 			check_game_victory
-			p @correct_guesses
+			puts "The correct letters you have guessed so far are #{@correct_guesses}"
+			puts "The incorrect letters you have guessed so far are #{@incorrect_guesses.join('')}"
+
 		else
 			@guesses_left -= 1
 			@incorrect_guesses.push(@player_guess)
-			p "You have guessed #{@player_guess} incorrectly, you have #{@guesses_left} guesses left"
-			p @correct_guesses
+			puts "You have guessed #{@player_guess} incorrectly, you have #{@guesses_left} guesses left."
+			puts "The correct letters you have guessed so far are #{@correct_guesses}"
+			puts "The incorrect letters you have guessed so far are #{@incorrect_guesses.join('')}"
 		end
 	end
 
 	def play_game
+		marshal_load
 		until @guesses_left == 0 do
-			marshal_load
       player_turn
 			marshal_dump
 		end
-		p "You have lost the game!"
+		puts "You have lost the game!"
 	end
 
 	def check_game_victory
 		if @correct_guesses == @random_word
-			p "You have won the game!"
+			puts "You have won the game!"
 			exit
 		end
 	end
 
 	def marshal_dump
-		puts "Would you like to save the game, type 1 to save."
+		puts "Would you like to save the game, type 'save' to save."
 		player_response = gets.chomp
-		if player_response == '1'
+		if player_response == 'save'
 			File.open('saved_game', 'w+') do |file|
 				Marshal.dump([@random_word, @correct_guesses, @incorrect_guesses, @guesses_left, @player_guess ], file)
 			end
@@ -63,9 +66,9 @@ class Player
 	end
 
 	def marshal_load
-		puts "Would you like to load the game, type 2 to load."
+		puts "Would you like to load the game, type 'load' to load."
 		player_response = gets.chomp
-		if player_response == '2'
+		if player_response == 'load'
 			@random_word, @correct_guesses, @incorrect_guesses, @guesses_left, @player_guess  = Marshal.load(File.binread('saved_game'))
 		end
 	end
