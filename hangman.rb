@@ -1,6 +1,5 @@
 require_relative 'random_word.rb'
 
-
 class Player
 
 	def initialize(random_word)
@@ -20,7 +19,6 @@ class Player
 	end
 
 	def player_turn
-		p @random_word
 		puts "What letter would you like to guess for the random word?"
 		@player_guess = gets.chomp.downcase
 		if @random_word.include?(@player_guess)
