@@ -36,11 +36,11 @@ class Player
 		end
 	end
 
-	def play_game(player_instance)
+	def play_game
 		until @guesses_left == 0 do
-			save_game(player_instance)
-			load_game(player_instance)
+			marshal_load
       player_turn
+			marshal_dump
 		end
 		p "You have lost the game!"
 	end
@@ -52,7 +52,24 @@ class Player
 		end
 	end
 
+	def marshal_dump
+		puts "Would you like to save the game, type 1 to save."
+		player_response = gets.chomp
+		if player_response == '1'
+			File.open('saved_game', 'w+') do |file|
+				Marshal.dump([@random_word, @correct_guesses, @incorrect_guesses, @guesses_left, @player_guess ], file)
+			end
+		end
+	end
+
+	def marshal_load
+		puts "Would you like to load the game, type 2 to load."
+		player_response = gets.chomp
+		if player_response == '2'
+			@random_word, @correct_guesses, @incorrect_guesses, @guesses_left, @player_guess  = Marshal.load(File.binread('saved_game'))
+		end
+	end
 end
 
-new_player = Player.new (get_random_word)
-new_player.play_game(new_player)
+new_player = Player.new(get_random_word)
+new_player.play_game
