@@ -54,9 +54,9 @@ class Player
     puts "Would you like to save the game, type 'save' to save."
     player_response = gets.chomp
     return unless player_response == 'save'
-      File.open('saved_game', 'w+') do |file|
-        Marshal.dump([@random_word, @correct_guesses, @incorrect_guesses, @guesses_left, @player_guess ], file)
-      end
+
+    File.open('saved_game', 'w+') do |file|
+      Marshal.dump([@random_word, @correct_guesses, @incorrect_guesses, @guesses_left, @player_guess ], file)
     end
   end
 
@@ -64,9 +64,10 @@ class Player
     puts "Would you like to load the game, type 'load' to load."
     player_response = gets.chomp
     return unless player_response == 'load'
-      @random_word, @correct_guesses, @incorrect_guesses, @guesses_left, @player_guess  = Marshal.load(File.binread('saved_game'))
-    end
+
+    @random_word, @correct_guesses, @incorrect_guesses, @guesses_left, @player_guess  = Marshal.load(File.binread('saved_game'))
   end
+  
 end
 
 new_player = Player.new(get_random_word)
