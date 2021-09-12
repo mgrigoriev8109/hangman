@@ -1,6 +1,9 @@
 require_relative 'random_word.rb'
+require 'yaml'
 
 class Player
+
+  attr_reader :random_word, :correct_guesses, :incorrect_guesses, :guesses_left, :player_guess
 
   def initialize(random_word)
     @random_word = random_word.split('')
@@ -55,8 +58,8 @@ class Player
     player_response = gets.chomp
     return unless player_response == 'save'
 
-    File.open('saved_game', 'w+') do |file|
-      Marshal.dump([@random_word, @correct_guesses, @incorrect_guesses, @guesses_left, @player_guess ], file)
+    File.open('saved_game.yml', 'w+') do |file|
+      YAML.dump([] << self, file)
     end
   end
 
@@ -65,9 +68,13 @@ class Player
     player_response = gets.chomp
     return unless player_response == 'load'
 
-    @random_word, @correct_guesses, @incorrect_guesses, @guesses_left, @player_guess  = Marshal.load(File.binread('saved_game'))
+    yaml = YAML.load_file('saved_game.yml')
+    @random_word = yaml[0].random_word
+    @correct_guesses = yaml[0].correct_guesses
+    @incorrect_guesses = yaml[0].incorrect_guesses
+    @guesses_left = yaml[0].guesses_left
+    @player_guess = yaml[0].player_guess
   end
-  
 end
 
 new_player = Player.new(get_random_word)
