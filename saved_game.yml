@@ -1,0 +1,20 @@
+---
+- !ruby/object:Player
+  random_word:
+  - t
+  - u
+  - f
+  - t
+  - e
+  - r
+  correct_guesses:
+  - _
+  - _
+  - f
+  - _
+  - _
+  - _
+  incorrect_guesses:
+  - a
+  guesses_left: 5
+  player_guess: f

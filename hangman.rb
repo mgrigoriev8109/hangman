@@ -13,14 +13,6 @@ class Player
     @player_guess = ''
   end
 
-  def modify_correct_guesses
-    @random_word.each_with_index do |letter, index|
-      if letter == @player_guess
-        @correct_guesses[index] = @player_guess
-      end
-    end
-  end
-
   def player_turn
     puts "What letter would you like to guess for the random word?"
     @player_guess = gets.chomp.downcase
@@ -39,11 +31,19 @@ class Player
 
   def play_game
     load_game
-    until @guesses_left == 0 do
+    until @guesses_left.zero?
       player_turn
       save_game
     end
     puts "You have lost the game!"
+  end
+
+  def modify_correct_guesses
+    @random_word.each_with_index do |letter, index|
+      if letter == @player_guess
+        @correct_guesses[index] = @player_guess
+      end
+    end
   end
 
   def check_game_victory
